@@ -1,7 +1,7 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import "dotenv/config";
 import router from "./routes";
-import Database from "./database";
+import database from "./database";
 
 const app: Express = express();
 const Port = process.env.PORT || 3000;
@@ -10,7 +10,7 @@ const Port = process.env.PORT || 3000;
 router(app);
 
 //connecting to databse
-Database.connect();
+database.connect();
 
 //Starting server
 app.listen(Port, (err?: any) => {

@@ -1,8 +1,11 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { useErrorHandler } from "../middlewares/errorHandler";
 import cors from "cors";
-import auth from "./auth.route";
 import cookieParser from "cookie-parser";
+
+//routes
+import auth from "./auth.route";
+import device from "./device.route";
 
 const router = (app: Express) => {
   //Allowing cross url requests
@@ -16,6 +19,7 @@ const router = (app: Express) => {
 
   // routes
   app.use("/api/v1/auth", auth);
+  app.use("/api/v1/device", device);
 
   //errorhandler
   app.use(useErrorHandler);

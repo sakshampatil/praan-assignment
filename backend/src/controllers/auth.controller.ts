@@ -6,7 +6,6 @@ import { responseHandler } from "../middlewares/responseHandler";
 import * as errorHandler from "../middlewares/errorHandler";
 
 import { IUser, ISignupDTO, ILoginDTO } from "../types";
-import mongoose from "mongoose";
 import helpers from "../helpers";
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
@@ -14,7 +13,7 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     const body: ISignupDTO = req.body;
 
     //validationg body
-    if (!body || !req.body.email || !req.body.password) {
+    if (!body || !body.email || !body.password) {
       throw new errorHandler.BadRequest("Bad request");
     }
 
@@ -54,7 +53,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
     const body: ILoginDTO = req.body;
 
     //validating body
-    if (!body || !req.body.email || !req.body.password) {
+    if (!body || !body.email || !body.password) {
       throw new errorHandler.BadRequest("Bad request");
     }
 

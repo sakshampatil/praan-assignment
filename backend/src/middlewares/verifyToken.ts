@@ -7,7 +7,7 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
 
   // checking for token
   if (!token) {
-    throw new error.Unauthorized("Unauthorized");
+    throw new error.InsufficientAccessError("Unauthorized");
   }
 
   try {
@@ -16,6 +16,6 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction): vo
     req.user = decoded;
     next();
   } catch (err: any) {
-    throw new error.Unauthorized(err);
+    throw new error.InsufficientAccessError(err);
   }
 };

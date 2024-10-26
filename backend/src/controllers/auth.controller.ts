@@ -75,11 +75,19 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     //generating refresh token
     const refreshtoken = helpers.generateRefreshToken(user._id, user.email);
+
+    //creating a secure cookie
+    res.cookie("jwt", refreshtoken, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
     //response body
     const resBody = {
       token: token,
       email: user.email,
-      refreshtoken: refreshtoken,
     };
 
     responseHandler(resBody, res, "Login Successful");
@@ -90,38 +98,52 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
 export const refreshToken = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let token: string | undefined = req.headers.authorization?.split(" ")[2] as string | undefined;
+    const cookies = req.cookies;
 
-    console.log("token", token);
+    const refreshtoken = cookies?.jwt;
 
-    if (!token) {
-      throw new errorHandler.BadRequest("Refresh token is required");
+    if (!refreshtoken) {
+      throw new errorHandler.Unauthorized("Unauthorized");
     }
 
     // verifying token
-    const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET as string);
+    const decoded = jwt.verify(refreshtoken, process.env.REFRESH_TOKEN_SECRET as string);
 
     // Check if decoded is of type JwtPayload to safely access _id and email
     if (typeof decoded === "object" && decoded !== null && "email" in decoded && "_id" in decoded) {
       const _id = (decoded as JwtPayload)._id;
       const email = (decoded as JwtPayload).email;
 
-      //generating jwt token
-      const token = helpers.generateAccessToken(_id, email);
+      //checking if user exists
+      const user = await userModel.findOne({ email: email });
+      if (!user) {
+        throw new errorHandler.BadRequest("User does not exist");
+      }
 
-      //generating refresh token
-      const refreshtoken = helpers.generateRefreshToken(_id, email);
+      //generating jwt token
+      const token = helpers.generateAccessToken(user._id, user.email);
 
       //response body
       const resBody = {
         token: token,
-        refreshtoken: refreshtoken,
       };
 
       responseHandler(resBody, res, "Success");
     } else {
-      throw new Error("Invalid token payload");
+      throw new errorHandler.BadRequest("Invalid token payload");
     }
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const logout = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const cookies = req.cookies;
+
+    res.clearCookie("jwt", { httpOnly: true, sameSite: "none", secure: true });
+
+    responseHandler({}, res, "Cookie Cleared");
   } catch (err) {
     next(err);
   }

@@ -8,6 +8,15 @@ import { setCredentials, logout } from "./features/authSlice";
 import { RootState } from "./index";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 
+interface RefreshResponse {
+  data?: {
+    data?: {
+      token: string;
+      email: string;
+    };
+  };
+}
+
 //base query
 const baseQuery = fetchBaseQuery({
   baseUrl: "http://localhost:3000/api/v1",
@@ -33,14 +42,18 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
     console.log("sending refresh token");
 
     // Fetching refresh token
-    const refreshResult = await baseQuery("/auth/refreshToken", api, extraOptions);
+    const refreshResult = (await baseQuery(
+      "/auth/refreshToken",
+      api,
+      extraOptions
+    )) as RefreshResponse;
     console.log(refreshResult);
 
     if (refreshResult) {
-      const user = (api.getState() as RootState).auth.user;
+      // const user = (api.getState() as RootState).auth.user;
       const data = {
-        token: refreshResult.data,
-        user: user,
+        token: refreshResult?.data?.data?.token,
+        user: refreshResult?.data?.data?.email,
       };
       // Store the new token
       api.dispatch(setCredentials({ data }));

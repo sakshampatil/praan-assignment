@@ -22,7 +22,14 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
+    refreshToken: builder.mutation({
+      query: () => ({
+        url: "/auth/refreshToken",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useSingupMutation, useLogoutMutation } = authApi;
+export const { useLoginMutation, useSingupMutation, useLogoutMutation, useRefreshTokenMutation } =
+  authApi;

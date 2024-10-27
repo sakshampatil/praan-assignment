@@ -7,6 +7,7 @@ import * as errorHandler from "../middlewares/errorHandler";
 
 import { IUser, ISignupDTO, ILoginDTO } from "../types";
 import helpers from "../helpers";
+import deviceModel from "../model/device.model";
 
 export const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -35,7 +36,15 @@ export const signup = async (req: Request, res: Response, next: NextFunction) =>
     body.password = hashPassword;
 
     // Creating user using encrypted password
-    const user: IUser = await userModel.create(body);
+    const user = await userModel.create(body);
+
+    const deviceBody = {
+      userId: user._id,
+      deviceNo: 1,
+    };
+
+    // Creating device
+    const device = await deviceModel.create(deviceBody);
 
     //response body
     const resBody = {
@@ -125,6 +134,7 @@ export const refreshToken = async (req: Request, res: Response, next: NextFuncti
       //response body
       const resBody = {
         token: token,
+        email: user.email,
       };
 
       responseHandler(resBody, res, "Success");

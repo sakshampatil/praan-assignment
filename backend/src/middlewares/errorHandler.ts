@@ -30,6 +30,7 @@ class ApplicationError extends GeneralError {}
 class InsufficientAccessError extends GeneralError {}
 
 const useErrorHandler = (err: Error, req: any, res: any, next: any) => {
+  console.log("err Handler", err);
   if (err instanceof GeneralError) {
     return res.status(err.getCode()).json({
       status: "error",
@@ -54,9 +55,9 @@ export {
 };
 
 process.on("uncaughtException", (err: Error) => {
-  console.log(err);
+  console.log("uncaughtException", err);
 });
 
 process.on("unhandledRejection", (reason: {} | null | undefined, promise: Promise<any>) => {
-  console.log(reason);
+  console.log("unhandledRejection", reason);
 });

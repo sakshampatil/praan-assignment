@@ -2,10 +2,13 @@ import React, { useEffect, useState } from "react";
 import helpers from "../helpers";
 import { useSingupMutation } from "../store/services/authApi";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
 
 const Signup: React.FC = () => {
-  const [signup, { isSuccess, isError, error: signupError }] = useSingupMutation();
+  const [signup, { isSuccess, isError, error: signupError, isLoading }] = useSingupMutation();
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -17,7 +20,7 @@ const Signup: React.FC = () => {
       setEmail("");
       setPassword("");
       setError(null);
-
+      navigate("/login");
       //   router.replace(`/profiles`);
     } else if (isError) {
       if ("status" in signupError) {
@@ -109,9 +112,9 @@ const Signup: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-2 mt-4 font-semibold text-white bg-black rounded-xl"
+              className="w-full py-2 mt-4 font-semibold text-white flex justify-center bg-black rounded-xl"
             >
-              Log In
+              {isLoading ? <Loader /> : "Signup"}
             </button>
           </form>
           <span className="text-black text-xs mt-8 text-center block">

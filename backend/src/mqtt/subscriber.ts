@@ -1,6 +1,7 @@
 import mqtt, { MqttClient } from "mqtt";
+import pollutantModel from "../model/pollutant.model";
 
-export const connect = () => {
+export const subscribe = () => {
   const brokerUrl = "mqtt://broker.hivemq.com:1883";
   const topic = "praan/pollutants";
 
@@ -9,7 +10,7 @@ export const connect = () => {
 
   // MQTT Connect and Subscribe
   client.on("connect", () => {
-    console.log(`Connected to MQTT broker at ${brokerUrl}`);
+    console.log(`Subscriber Connected to MQTT broker at ${brokerUrl}`);
     client.subscribe(topic, (err) => {
       if (err) {
         console.error("Subscription error:", err);
@@ -20,7 +21,13 @@ export const connect = () => {
   });
 
   // Handle Incoming Messages
-  client.on("message", (topic, message) => {
-    console.log(`Received message on topic ${topic}:`, message.toString());
+  client.on("message", async (topic, message) => {
+    // console.log(`Received message on topic ${topic}:`, JSON.parse(message.toString()));
+    const polllutants = JSON.parse(message.toString());
+    await pollutantModel.insertMany(polllutants);
   });
 };
+
+const subscriber = { subscribe };
+
+export default subscriber;

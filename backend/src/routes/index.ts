@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 //routes
 import auth from "./auth.route";
 import device from "./device.route";
+import pollutant from "./pollutant.route";
 
 const router = (app: Express) => {
   //Allowing cross url requests
@@ -20,6 +21,7 @@ const router = (app: Express) => {
   // routes
   app.use("/api/v1/auth", auth);
   app.use("/api/v1/device", device);
+  app.use("/api/v1/pollutant", pollutant);
 
   //errorhandler
   app.use(useErrorHandler);

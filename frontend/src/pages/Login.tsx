@@ -3,10 +3,17 @@ import React, { useEffect, useState } from "react";
 import helpers from "../helpers";
 import { useLoginMutation } from "../store/services/authApi";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../store/hooks";
+import { setCredentials } from "../store/features/authSlice";
+import Loader from "../components/Loader";
 
 const Login: React.FC = () => {
-  const [login, { isSuccess, isError, error: loginError }] = useLoginMutation();
+  const [login, { isSuccess, isError, error: loginError, data: loginData, isLoading }] =
+    useLoginMutation();
+  const dispatch = useAppDispatch();
+
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -14,11 +21,18 @@ const Login: React.FC = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      const data = {
+        token: loginData.data.token,
+        user: loginData.data.email,
+      };
+
+      dispatch(setCredentials({ data }));
       toast.success("Success");
       setEmail("");
       setPassword("");
       setError(null);
-      //   router.replace(`/profiles`);
+
+      navigate("/");
     } else if (isError) {
       if ("status" in loginError) {
         // This is likely a FetchBaseQueryError
@@ -109,9 +123,9 @@ const Login: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-2 mt-4 font-semibold text-white bg-black rounded-xl"
+              className="w-full py-2 mt-4 font-semibold text-white flex justify-center bg-black rounded-xl"
             >
-              Log In
+              {isLoading ? <Loader /> : "Login"}
             </button>
           </form>
           <span className="text-black text-xs mt-8 text-center block">

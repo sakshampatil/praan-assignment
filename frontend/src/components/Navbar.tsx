@@ -1,4 +1,3 @@
-import React from "react";
 import Logo from "../assets/logo.svg";
 import { IoLogOutOutline } from "react-icons/io5";
 import { useLogoutMutation } from "../store/services/authApi";

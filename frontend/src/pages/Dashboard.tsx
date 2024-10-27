@@ -93,7 +93,7 @@ const Dashboard = () => {
             {selectedDevice !== null && (
               <PollutantChart
                 currentDate={currentDate}
-                pollutantType={selectedPollutant?.type ? selectedPollutant.type : "p1"}
+                pollutantType={selectedPollutant?.type ? selectedPollutant?.type : "p1"}
                 deviceId={selectedDevice?._id}
               />
             )}

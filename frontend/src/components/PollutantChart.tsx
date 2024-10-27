@@ -21,7 +21,7 @@ const PollutantChart: React.FC<PollutantProps> = ({ deviceId, pollutantType, cur
         <ResponsiveContainer height={500}>
           <LineChart data={pollutantList?.data}>
             <CartesianGrid strokeDasharray="10 10" />
-            <XAxis dataKey="time" />
+            <XAxis dataKey="time" domain={[1, 24]} />
             <YAxis domain={[0, 100]} hide />
             <Line
               type="monotone"

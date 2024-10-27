@@ -104,8 +104,6 @@ export const listPollutant = async (req: Request, res: Response, next: NextFunct
       },
     ]);
 
-    console.log("pollutants", pollutants);
-
     return responseHandler(pollutants, res);
   } catch (err) {
     next(err);

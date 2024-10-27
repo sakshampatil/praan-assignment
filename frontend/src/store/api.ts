@@ -8,6 +8,8 @@ import { setCredentials, logout } from "./features/authSlice";
 import { RootState } from "./index";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 interface RefreshResponse {
   data?: {
     data?: {
@@ -19,7 +21,7 @@ interface RefreshResponse {
 
 //base query
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:3000/api/v1",
+  baseUrl: backendUrl,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.token;

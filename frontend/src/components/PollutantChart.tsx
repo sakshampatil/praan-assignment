@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
 import { useListPollutantsQuery } from "../store/services/pollutantApi";
 import { Moment } from "moment";
@@ -10,10 +10,16 @@ interface PollutantProps {
 }
 
 const PollutantChart: React.FC<PollutantProps> = ({ deviceId, pollutantType, currentDate }) => {
-  const { data: pollutantList } = useListPollutantsQuery({
+  const { data: pollutantList, refetch } = useListPollutantsQuery({
     deviceId: deviceId,
     date: currentDate.toISOString(),
   });
+
+  useEffect(() => {
+    if (deviceId && currentDate) {
+      refetch();
+    }
+  }, [deviceId, currentDate]);
 
   return (
     <>

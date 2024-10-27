@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import userModel from "../model/user.model";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { responseHandler } from "../middlewares/responseHandler";
 import * as errorHandler from "../middlewares/errorHandler";

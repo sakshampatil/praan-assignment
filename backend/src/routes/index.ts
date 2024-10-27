@@ -10,7 +10,7 @@ import pollutant from "./pollutant.route";
 
 const router = (app: Express) => {
   //Allowing cross url requests
-  app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+  app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
   // Use cookie-parser
   app.use(cookieParser());

@@ -112,7 +112,7 @@ const Signup: React.FC = () => {
 
             <button
               type="submit"
-              className="w-full py-2 mt-4 font-semibold text-white flex justify-center bg-black rounded-xl"
+              className="w-full py-2 mt-4 font-semibold text-white flex justify-center items-center bg-black rounded-xl"
             >
               {isLoading ? <Loader /> : "Signup"}
             </button>

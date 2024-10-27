@@ -1,0 +1,26 @@
+version: "3"
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: praan-frontend
+    ports:
+      - "3001:3001"
+    stdin_open: true
+    depends_on:
+      - backend
+    networks:
+      - mern-network
+
+  backend:
+    build: ./backend
+    container_name: praan-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    networks:
+      - mern-network
+
+networks:
+  mern-network:
+    driver: bridge

@@ -38,16 +38,12 @@ export const listPollutant = async (req: Request, res: Response, next: NextFunct
     const { deviceId } = req.params;
     let { date } = req.query;
     let requiredDate;
-    console.log("date", date);
+
     if (!date) {
       requiredDate = new Date();
     } else {
-      console.log("here");
       requiredDate = new Date(String(date));
-      console.log("requiredDate", requiredDate);
     }
-
-    console.log("deviceId", new mongoose.Types.ObjectId(deviceId));
 
     //checking if device exists
     const device = await deviceModel.findOne({ _id: deviceId });
@@ -59,8 +55,6 @@ export const listPollutant = async (req: Request, res: Response, next: NextFunct
     // Create separate start and end of day timestamps for the query
     const startOfDay = new Date(requiredDate);
     startOfDay.setUTCHours(0, 0, 0, 0);
-
-    console.log("startOfDay", startOfDay);
 
     const endOfDay = new Date(requiredDate);
     endOfDay.setUTCHours(23, 59, 59, 999);
@@ -115,15 +109,12 @@ export const getAvgPollutant = async (req: Request, res: Response, next: NextFun
     const { deviceId } = req.params;
     let { date } = req.query;
     let requiredDate;
-    console.log("date", date);
+
     if (!date) {
       requiredDate = new Date();
     } else {
-      console.log("here");
       requiredDate = new Date(String(date));
     }
-
-    console.log("deviceId", new mongoose.Types.ObjectId(deviceId));
 
     //checking if device exists
     const device = await deviceModel.findOne({ _id: deviceId });
@@ -163,8 +154,6 @@ export const getAvgPollutant = async (req: Request, res: Response, next: NextFun
         },
       },
     ]);
-
-    console.log("pollutants", pollutants);
 
     return responseHandler(pollutants[0], res);
   } catch (err) {

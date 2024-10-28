@@ -30,7 +30,6 @@ class ApplicationError extends GeneralError {}
 class InsufficientAccessError extends GeneralError {}
 
 const useErrorHandler = (err: Error, req: any, res: any, next: any) => {
-  console.log("err Handler", err);
   if (err instanceof GeneralError) {
     return res.status(err.getCode()).json({
       status: "error",

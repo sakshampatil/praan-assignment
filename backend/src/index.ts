@@ -4,6 +4,7 @@ import router from "./routes";
 import database from "./database";
 import publisher from "./mqtt/publisher";
 import subscriber from "./mqtt/subscriber";
+import cors from "cors";
 
 const app: Express = express();
 const Port = process.env.PORT || 3000;

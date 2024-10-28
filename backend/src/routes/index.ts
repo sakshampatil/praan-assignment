@@ -1,16 +1,17 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import { useErrorHandler } from "../middlewares/errorHandler";
-import cors from "cors";
+
 import cookieParser from "cookie-parser";
 
 //routes
 import auth from "./auth.route";
 import device from "./device.route";
 import pollutant from "./pollutant.route";
+import cors from "cors";
 
 const router = (app: Express) => {
   //Allowing cross url requests
-  app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
+  app.use(cors({ origin: "*", credentials: true }));
 
   // Use cookie-parser
   app.use(cookieParser());

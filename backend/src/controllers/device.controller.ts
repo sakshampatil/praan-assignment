@@ -7,7 +7,6 @@ import userModel from "../model/user.model";
 //creating device
 export const createDevice = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log("req.user", req.user);
     const user = req.user;
 
     const deviceBody = {

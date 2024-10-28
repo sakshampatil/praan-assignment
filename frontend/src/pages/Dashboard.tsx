@@ -58,7 +58,6 @@ const Dashboard = () => {
     setSelectedPollutant({ type, value });
   };
 
-  console.log("devices", devices);
   return (
     <>
       <ToastContainer

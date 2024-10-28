@@ -41,15 +41,12 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
   let result = await baseQuery(args, api, extraOptions);
 
   if (result?.error?.status === 403) {
-    console.log("sending refresh token");
-
     // Fetching refresh token
     const refreshResult = (await baseQuery(
       "/auth/refreshToken",
       api,
       extraOptions
     )) as RefreshResponse;
-    console.log(refreshResult);
 
     if (refreshResult) {
       // const user = (api.getState() as RootState).auth.user;

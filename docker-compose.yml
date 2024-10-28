@@ -3,6 +3,7 @@ version: "3"
 services:
   frontend:
     build: ./frontend
+    image: 377327318068.dkr.ecr.ap-south-1.amazonaws.com/praan-frontend:latest
     container_name: praan-frontend
     ports:
       - "3001:3001"
@@ -14,6 +15,7 @@ services:
 
   backend:
     build: ./backend
+    image: 377327318068.dkr.ecr.ap-south-1.amazonaws.com/praan-backend:latest
     container_name: praan-backend
     restart: always
     ports:
